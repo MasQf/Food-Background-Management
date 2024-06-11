@@ -166,7 +166,7 @@ export default {
 
 <style lang="scss">
 $bg:#f3a15592;
-$light_gray:#e4e4e4;
+$light_gray:#000000;
 $cursor: #fccb69;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
@@ -175,17 +175,6 @@ $cursor: #fccb69;
     font-weight: 800;
   }
 }
-
-// body {
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     width: 100vh;
-//     height: 100vh;
-//     background: url('../../assets/dusk.jpg') no-repeat;
-//     background-size: cover;
-//     background-position: center;
-// }
 
 /* reset element-ui css */
 .login-container {
@@ -289,64 +278,3 @@ $light_gray:#eee;
 }
 </style>
 
-<style scoped>
-  .login-container{
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 20px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    margin-left: 680px;
-    width: 55%;
-  }
-
-  .codeAndButton{
-    display: flex;
-    height: 105px;
-    width: 100%;
-  }
-
-  .captcha{
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-
-  }
-
-  .captchaImg{
-    cursor: pointer;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-
-  .loginButton {
-    background: #C88031;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 1.2em;
-    font-weight: 800;
-    transition: 0.2s;
-    box-shadow: 0 0.3em #bf690d;
-    text-shadow: 1px 1px #bf690d;
-    height: 93px;
-    width: 100%;
-    margin-left: 10px;
-  }
-
-  .loginButton:hover {
-    color: #C88031;
-    background: #a8733b;
-  }
-
-  .loginButton:active {
-      transform: translateY(0.1em);
-      box-shadow: 0 0.2em #bf690d;
-  }
-
-  .loginButton:focus {
-    outline: none;
-  }
-</style>

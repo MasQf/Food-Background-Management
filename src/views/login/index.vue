@@ -176,16 +176,16 @@ $cursor: #fccb69;
   }
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vh;
-    height: 100vh;
-    background: url('../../assets/dusk.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
-}
+// body {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     width: 100vh;
+//     height: 100vh;
+//     background: url('../../assets/dusk.jpg') no-repeat;
+//     background-size: cover;
+//     background-position: center;
+// }
 
 /* reset element-ui css */
 .login-container {

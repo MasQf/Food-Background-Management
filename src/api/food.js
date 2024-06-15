@@ -29,3 +29,10 @@ export function deleteFood(foodId) {
     method: 'delete'
   })
 }
+
+export function getCategoryCount() {
+  return request({
+    url: '/food/categoryCount',
+    method: 'get'
+  })
+}

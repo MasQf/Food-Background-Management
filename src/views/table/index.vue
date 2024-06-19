@@ -1,16 +1,26 @@
 <script>
 import * as echarts from 'echarts'
+import './iconfont'
 import { getCategoryCount } from '@/api/food'
-import { getAllCategorys, addCategory } from '@/api/category'
+import { getAllCategorys, addCategory, updateCategory, deleteCategory } from '@/api/category'
 
 export default {
   data() {
     return {
       newCategory: { name: '', sort: '' },
       oldCategory: { id: '', name: '', sort: '' },
-      dialogVisible: false,
+      addDialogVisible: false,
+      editDialogVisible: false,
       categorys: [],
-      categoryCounts: []
+      categoryCounts: [],
+      rules: {
+        name: [
+          { required: true, message: '?', trigger: 'blur' }
+        ],
+        sort: [
+          { required: true, message: '?', trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
@@ -31,18 +41,74 @@ export default {
       })
     },
     addCategory(newCategory) {
-      this.dialogVisible = false
-      addCategory(newCategory).then(() => {
-        this.newCategory = { name: '', sort: '' }
-        this.fetchAllCategory()
+      this.$refs.addForm.validate(valid => {
+        if (valid) {
+          this.addDialogVisible = false
+          addCategory(newCategory).then(() => {
+            this.newCategory = { name: '', sort: '' }
+            this.fetchAllCategory()
+          })
+          this.$notify({
+            title: 'SUCCESS',
+            message: '添加成功',
+            type: 'success'
+          });
+        } else {
+          this.$notify.error({
+          title: 'ERROR',
+          message: '未正确完成填写'
+        });
+        }
       })
     },
-    handleEdit(index, row) {
-      console.log(row)
+    handleEdit(category) {
+      this.oldCategory = { ...category }
+      this.editDialogVisible = true
+    },
+    updateCategory(oldCategory) {
+      this.$refs.editForm.validate(valid => {
+        if (valid) {
+          updateCategory(oldCategory).then(() => {
+            this.editDialogVisible = false
+            this.oldCategory = { name: '', sort: '' }
+            this.fetchAllCategory()
+          })
+          this.$notify({
+            title: 'SUCCESS',
+            message: '更新成功',
+            type: 'success'
+          });
+        } else {
+          this.$notify.error({
+          title: 'ERROR',
+          message: '未正确完成填写'
+        });
+        }
+      })
     },
     handleClose(done) {
-      this.dialogVisible = false
+      this.addDialogVisible = false
       done()
+    },
+    handleDelete(categoryId) {
+      this.$confirm('将会删除该分类', 'WARNING', {
+        confirmButtonText: 'YES',
+        cancelButtonText: 'NO',
+        type: 'warning'
+      }).then(() => {
+        deleteCategory(categoryId).then(() => {
+          this.fetchAllCategory()
+        })
+        this.$message({
+          type: 'success',
+          message: 'Delete Successfully'
+        })
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消删除'
+        // })
+      })
     },
 
     cellStyle() {
@@ -99,21 +165,49 @@ export default {
     <!-- 分类列表 -->
     <div class="editContainer">
       <div class="addCategory">
-        <button class="addButton" @click="dialogVisible = true">+</button>
+        <button class="addButton" @click="addDialogVisible = true">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-tubiaozhizuomoban"></use>
+          </svg>
+        </button>
       </div>
 
       <el-dialog
-        title="提示"
-        :visible.sync="dialogVisible"
+        class="addDialog"
+        :visible.sync="addDialogVisible"
+        width="30%"
+        height="200px"
+        :before-close="handleClose"
+      >
+        <span slot="footer" class="dialog-footer">
+          <el-form ref="addForm" :model="newCategory" :rules="rules">
+            <el-form-item label="名称" prop="name">
+              <el-input v-model="newCategory.name" />
+              <template #error="{ error }">
+                <span class="custom-error">{{ error }}</span>
+              </template>
+            </el-form-item>
+            <button class="finishButton" @click="addCategory(newCategory)"></button>
+          </el-form>
+        </span>
+      </el-dialog>
+
+      <el-dialog
+        class="editDialog"
+        :visible.sync="editDialogVisible"
         width="30%"
         :before-close="handleClose"
       >
-        <span>这是一段信息</span>
         <span slot="footer" class="dialog-footer">
-          {{ newCategory }}
-          <el-input v-model="newCategory.name" placeholder="name" />
-          <el-input v-model="newCategory.sort" placeholder="sort" />
-          <button @click="addCategory(newCategory)">OK</button>
+          <el-form ref="editForm" :model="oldCategory" :rules="rules">
+            <el-form-item label="名称" prop="name">
+              <el-input v-model="oldCategory.name" />
+              <template #error="{ error }">
+                <span class="custom-error">{{ error }}</span>
+              </template>
+            </el-form-item>
+            <button class="finishButton" @click="updateCategory(oldCategory)"></button>
+          </el-form>
         </span>
       </el-dialog>
 
@@ -143,12 +237,12 @@ export default {
           <template slot-scope="scope">
             <button
               class="editButton"
-              @click="handleEdit(scope.$index, scope.row)"
-            >Edit</button>
+              @click="handleEdit(scope.row)"
+            ></button>
             <button
               class="deleteButton"
-              @click="handleDelete(scope.$index, scope.row)"
-            >Del</button>
+              @click="handleDelete(scope.row.id)"
+            ></button>
           </template>
         </el-table-column>
       </el-table>
@@ -192,40 +286,104 @@ export default {
 }
 
 .addButton{
-  width: 100px;
-  height: 50px;
   font-size: 30px;
-}
-
-button{
-  background: #fff1d5;
+  background-color: white;
   border: none;
-  border-radius: 20px;
   cursor: pointer;
-
-  font-weight: 800;
-  transition: 0.2s;
-  box-shadow: 0 0.2em #ffc07c;
-  text-shadow: 1px 1px #ffaa50;
-  margin-left: 10px;
 }
-
-button:hover {
-  color: #ffffff;
-  background: #ffca92;
+.editButton{
+    background: #16c719;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: rgba(0, 0, 0, 0.29) 1px solid;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 800;
+    transition: 0.2s;
+    box-shadow: 0 0.3em #2f9413;
+    margin-right: 5px;
   }
-
-button:active {
-  transform: translateY(0.1em);
-  box-shadow: 0 0.1em #bf690d;
-}
-
-/* .editButton{
-  border-radius: 50%;
-  border: none;
-  width: 20px;
-  height: 20px;
-  background-color: rgb(7, 169, 7);
-  box-shadow: 0 0.5px rgb(0, 0, 0);
-} */
+  .editButton:hover {
+    color: rgb(72, 84, 71);
+    background: #77e456;
+  }
+  .editButton:active {
+      transform: translateY(0.1em);
+      box-shadow: 0 0.2em #116406;
+  }
+  .deleteButton{
+    background: #ff6964;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: rgba(0, 0, 0, 0.29) 1px solid;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 800;
+    transition: 0.2s;
+    box-shadow: 0 0.3em #c65d48;
+  }
+  .deleteButton:hover {
+    color: rgb(255, 174, 159);
+    background: #ff3523;
+  }
+  .finishButton{
+    background: #16c719;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: rgba(0, 0, 0, 0.29) 1px solid;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 800;
+    transition: 0.2s;
+    box-shadow: 0 0.3em #2f9413;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  .finishButton:hover {
+    color: rgb(72, 84, 71);
+    background: #77e456;
+  }
+  .finishButton:active {
+      transform: translateY(0.1em);
+      box-shadow: 0 0.2em #116406;
+  }
+  .icon {
+    width: 1.8em;
+    height: 1.8em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
+  ::v-deep .el-dialog__body{
+    padding: 20px;
+  }
+  ::v-deep .el-dialog__header{
+    padding: 0vh 0vw 0vh 0vw;
+  }
+      /*修改右上角按钮*/
+  ::v-deep .el-dialog__headerbtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 0;
+    /* background: 0 0; */
+    border: none;
+    outline: 0;
+    cursor: pointer;
+    font-size: 30px;
+  }
+  .custom-error {
+    color: red;
+    font-weight: bold;
+    position: absolute; /* 使用绝对定位 */
+    bottom: -20px; /* 调整位置，使其显示在表单项下方 */
+    right: 0;
+    white-space: nowrap;
+  }
 </style>

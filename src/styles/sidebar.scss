@@ -27,6 +27,10 @@
 
     .scrollbar-wrapper {
       overflow-x: hidden !important;
+      background: url(../assets/loginMonkey.png);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center; 
     }
 
     .el-scrollbar__bar.is-vertical {

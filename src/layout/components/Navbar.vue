@@ -10,17 +10,20 @@
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown custom-dropdown">
-          <router-link to="/">
+          <!-- <router-link to="/">
             <el-dropdown-item>
               Home
             </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
+          </router-link> -->
+          <a target="_blank" href="https://github.com/MasQf/Food-Background-Management/tree/main">
+            <el-dropdown-item>Home</el-dropdown-item>
+          </a>
+          <!-- <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
             <el-dropdown-item>Github</el-dropdown-item>
           </a>
           <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
             <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
+          </a> -->
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">Log Out</span>
           </el-dropdown-item>
@@ -116,12 +119,13 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
-
+        
         .user-avatar {
           cursor: pointer;
           width: 40px;
           height: 40px;
           border-radius: 10px;
+          object-fit: cover; 
         }
 
         .el-icon-caret-bottom {

@@ -36,3 +36,11 @@ export function getCategoryCount() {
     method: 'get'
   })
 }
+
+export function getLimitFoods(params) {
+  return request({
+    url: '/food',
+    method: 'get',
+    params: params
+  })
+}

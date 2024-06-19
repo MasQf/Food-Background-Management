@@ -137,7 +137,9 @@ export default {
       <div class="codeAndButton">
         <!-- 验证码 -->
         <el-form-item prop="captcha" class="captcha">
-
+          <span class="svg-container">
+            <svg-icon icon-class="example" />
+          </span>
           <el-input
             ref="captcha"
             v-model="loginForm.captcha"
@@ -146,13 +148,13 @@ export default {
             type="text"
             tabindex="1"
             auto-complete="on"
+            @keyup.enter.native="handleLogin"
           />
 
           <img :src="captchaUrl" class="captchaImg" @click="changeCaptcha">
         </el-form-item>
 
-        <el-button class="loginButton" :loading="loading" color="#C88031" @click.native.prevent="handleLogin">Login</el-button>
-        <!-- <button class="loginButton" :loading="loading" @click="handleLogin">Login</button> -->
+        <el-button type="info" class="loginButton" :loading="loading" @click.native.prevent="handleLogin">Login</el-button>
       </div>
 
       <div class="tips">
@@ -166,14 +168,25 @@ export default {
 
 <style lang="scss">
 $bg:#f3a15592;
-$light_gray:#000000;
-$cursor: #fccb69;
+$light_gray:#ffffff;
+$cursor: #d1d1d1;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
     color: $cursor;
     font-weight: 800;
   }
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vh;
+    height: 100vh;
+    background: url('../../assets/dusk.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 /* reset element-ui css */
@@ -278,3 +291,74 @@ $light_gray:#eee;
 }
 </style>
 
+<style scoped>
+  .login-container{
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-left: 680px;
+    width: 55%;
+  }
+
+  .codeAndButton{
+    display: flex;
+    height: 105px;
+    width: 100%;
+  }
+
+  .captcha{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+  }
+
+  .captchaImg{
+    cursor: pointer;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  .loginButton {
+    background: #C88031;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: 800;
+    transition: 0.2s;
+    box-shadow: 0 0.3em #bf690d;
+    text-shadow: 1px 1px #bf690d;
+    height: 93px;
+    width: 100%;
+    margin-left: 10px;
+  }
+
+  .loginButton:hover {
+    color: #be6404;
+    background: #d4914a;
+  }
+
+  .loginButton:active {
+      transform: translateY(0.1em);
+      box-shadow: 0 0.2em #bf690d;
+  }
+
+  .loginButton:focus {
+    outline: none;
+  }
+
+  ::v-deep .el-form-item__error{
+    color: rgba(255, 188, 188, 0.832);
+    font-weight: bold;
+    font-size: 14px;
+    position: absolute; /* 使用绝对定位 */
+    bottom: -20px; /* 调整位置，使其显示在表单项下方 */
+    right: 0;
+    white-space: nowrap;
+  }
+</style>

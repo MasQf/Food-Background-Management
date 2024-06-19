@@ -29,10 +29,3 @@ export function deleteCategory(categoryId) {
     method: 'delete'
   })
 }
-
-export function getCategoryCount() {
-  return request({
-    url: '/category/categoryCount',
-    method: 'get'
-  })
-}

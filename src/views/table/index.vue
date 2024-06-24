@@ -31,7 +31,6 @@ export default {
     fetchAllCategory() {
       getAllCategorys().then(response => {
         this.categorys = response.data.categorys
-        this.renderChart()
       })
     },
     fetchCategoryCounts() {
@@ -158,11 +157,12 @@ export default {
 
 <template>
   <div class="content">
+    <!-- 图表 -->
     <div class="chartContainer">
       <div class="title">Category & Quantity</div>
       <div id="categoryChart" />
     </div>
-    <!-- 分类列表 -->
+    <!-- 内容 -->
     <div class="editContainer">
       <div class="addCategory">
         <button class="addButton" @click="addDialogVisible = true">
@@ -171,7 +171,7 @@ export default {
           </svg>
         </button>
       </div>
-
+    <!-- 添加分类对话框 -->
       <el-dialog
         class="addDialog"
         :visible.sync="addDialogVisible"
@@ -191,7 +191,7 @@ export default {
           </el-form>
         </span>
       </el-dialog>
-
+    <!-- 编辑分类对话框 -->
       <el-dialog
         class="editDialog"
         :visible.sync="editDialogVisible"
@@ -210,7 +210,7 @@ export default {
           </el-form>
         </span>
       </el-dialog>
-
+      <!-- 分类详细列表 -->
       <el-table
         :data="categorys"
         stripe

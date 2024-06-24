@@ -44,7 +44,7 @@ export default {
       immediate: true
     }
   },
-  mounted() {
+  created() {
     this.key = Math.random()
     this.captchaUrl = 'http://localhost:8080/captcha?key=' + this.key
   },
@@ -134,6 +134,7 @@ export default {
         </span>
       </el-form-item>
 
+      <!-- 验证码 -->
       <div class="codeAndButton">
         <!-- 验证码 -->
         <el-form-item prop="captcha" class="captcha">

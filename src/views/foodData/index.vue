@@ -371,34 +371,6 @@ export default {
   .container{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
-  .foodList{
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap
-  }
-  .foodContainer{
-    background-color: rgb(119, 134, 167);
-    display: flex;
-    padding: 15px;
-    margin: 5px;
-    border-radius: 20px;
-    width: 48%;
-  }
-  .foodContainer:hover{
-    background-color: rgb(255, 218, 145);
-    box-shadow: 0.2em 0.3em #ffc07c;
-  }
-  .foodContent{
-    padding-left: 30px;
-  }
-  .foodInfo{
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-  }
-  img{
-    border-radius: 20px;
-  }
   .editDialog{
     top: -80px;
   }
